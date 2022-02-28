@@ -8,52 +8,6 @@
 
     <name>AsteroidsEntityFramework</name>
 
-    <repositories>
-        <!--
-        Repository hosting NetBeans modules, especially APIs.
-        Versions are based on IDE releases, e.g.: RELEASE691
-        To create your own repository, use: nbm:populate-repository
-        -->
-        <repository>
-            <id>netbeans</id>
-            <name>NetBeans</name>
-            <url>http://bits.netbeans.org/nexus/content/groups/netbeans/</url>
-        </repository>
-    </repositories>
-
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.netbeans.utilities</groupId>
-                    <artifactId>nbm-maven-plugin</artifactId>
-                    <version>4.3</version>
-                    <extensions>true</extensions>
-                    <configuration>
-                        <brandingToken>${brandingToken}</brandingToken>
-                        <cluster>${brandingToken}</cluster>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <!-- NetBeans 6.9+ requires JDK 6, starting NetBeans 7.4 source 1.7 is required -->
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.8.1</version>
-                    <configuration>
-                        <source>1.8</source>
-                        <target>1.8</target>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <version>3.1.2</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
-
-
     <modules>
         <module>Core</module>
         <module>Common</module>
@@ -64,8 +18,8 @@
 
 
     <properties>
-        <netbeans.version>RELEASE112</netbeans.version>
-        <brandingToken>AsteroidsEntityFramework</brandingToken>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 </project>

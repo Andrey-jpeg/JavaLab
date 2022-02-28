@@ -5,20 +5,23 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-
+import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
+import dk.sdu.mmmi.cbse.common.util.SPILocator;
+import dk.sdu.mmmi.cbse.managers.GameInputProcessor;
 import java.util.ArrayList;
 import java.util.Collection;
-import dk.sdu.mmmi.cbse.managers.GameInputProcessor;
+import java.util.List;
 
 public class Game
         implements ApplicationListener {
 
     private static OrthographicCamera cam;
     private ShapeRenderer sr;
+    private List<IEntityProcessingService> entityProcessors = new ArrayList<>();
     private final GameData gameData = new GameData();
     private World world = new World();
 
@@ -37,9 +40,9 @@ public class Game
         Gdx.input.setInputProcessor(
                 new GameInputProcessor(gameData));
 
-        for (IGamePluginService plugin : result.allInstances()) {
-            plugin.start(gameData, world);
-            gamePlugins.add(plugin);
+        // Lookup all Game Plugins using ServiceLoader
+        for (IGamePluginService iGamePlugin : getPluginServices()) {
+            iGamePlugin.start(gameData, world);
         }
     }
 
@@ -101,4 +104,11 @@ public class Game
     public void dispose() {
     }
 
+    private Collection<? extends IGamePluginService> getPluginServices() {
+        return SPILocator.locateAll(IGamePluginService.class);
+    }
+
+    private Collection<? extends IEntityProcessingService> getEntityProcessingServices() {
+        return SPILocator.locateAll(IEntityProcessingService.class);
+    }
 }
