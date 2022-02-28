@@ -6,31 +6,21 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 import dk.sdu.mmmi.cbse.managers.GameInputProcessor;
-import org.openide.util.Lookup;
-import org.openide.util.LookupEvent;
-import org.openide.util.LookupListener;
 
 public class Game
         implements ApplicationListener {
 
     private static OrthographicCamera cam;
     private ShapeRenderer sr;
-    private final Lookup lookup = Lookup.getDefault();
     private final GameData gameData = new GameData();
-    private List<IGamePluginService> gamePlugins = new CopyOnWriteArrayList<>();
     private World world = new World();
-    private Lookup.Result<IGamePluginService> result;
 
     @Override
     public void create() {
@@ -46,10 +36,6 @@ public class Game
 
         Gdx.input.setInputProcessor(
                 new GameInputProcessor(gameData));
-
-        result = lookup.lookupResult(IGamePluginService.class);
-        result.addLookupListener(lookupListener);
-        result.allItems();
 
         for (IGamePluginService plugin : result.allInstances()) {
             plugin.start(gameData, world);
@@ -115,32 +101,4 @@ public class Game
     public void dispose() {
     }
 
-    private Collection<? extends IEntityProcessingService> getEntityProcessingServices() {
-        return lookup.lookupAll(IEntityProcessingService.class);
-    }
-
-    private final LookupListener lookupListener = new LookupListener() {
-        @Override
-        public void resultChanged(LookupEvent le) {
-
-            Collection<? extends IGamePluginService> updated = result.allInstances();
-
-            for (IGamePluginService us : updated) {
-                // Newly installed modules
-                if (!gamePlugins.contains(us)) {
-                    us.start(gameData, world);
-                    gamePlugins.add(us);
-                }
-            }
-
-            // Stop and remove module
-            for (IGamePluginService gs : gamePlugins) {
-                if (!updated.contains(gs)) {
-                    gs.stop(gameData, world);
-                    gamePlugins.remove(gs);
-                }
-            }
-        }
-
-    };
 }

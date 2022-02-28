@@ -1,4 +1,6 @@
-package dk.sdu.mmmi.cbse;
+package dk.sdu.mmmi.cbse.asteroid;
+
+import static dk.sdu.mmmi.cbse.asteroid.AsteroidType.LARGE;
 
 import java.util.Random;
 
@@ -8,7 +10,6 @@ import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
-import static dk.sdu.mmmi.cbse.AsteroidType.LARGE;
 
 public class AsteroidPlugin implements IGamePluginService {
     private Entity asteroid;

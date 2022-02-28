@@ -1,4 +1,4 @@
-package dk.sdu.mmmi.cbse;
+package dk.sdu.mmmi.cbse.asteroid;
 
 public enum AsteroidType {
     LARGE("LARGE"),
